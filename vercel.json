@@ -15,8 +15,44 @@
       "dest": "/index.html"
     },
     {
-      "src": "/api/(.*)",
-      "dest": "/api/$1"
+      "src": "/api/login",
+      "dest": "/api/whatsapp?endpoint=qr"
+    },
+    {
+      "src": "/api/status",
+      "dest": "/api/whatsapp?endpoint=status"
+    },
+    {
+      "src": "/api/logout",
+      "dest": "/api/whatsapp?endpoint=logout"
+    },
+    {
+      "src": "/api/send/text",
+      "dest": "/api/messages?type=text"
+    },
+    {
+      "src": "/api/send/image",
+      "dest": "/api/messages?type=image"
+    },
+    {
+      "src": "/api/send/audio",
+      "dest": "/api/messages?type=audio"
+    },
+    {
+      "src": "/api/send/file",
+      "dest": "/api/messages?type=file"
+    },
+    {
+      "src": "/api/send/contact",
+      "dest": "/api/messages?type=contact"
+    },
+    {
+      "src": "/api/send/location",
+      "dest": "/api/messages?type=location"
+    },
+    {
+      "src": "/api/send/poll",
+      "dest": "/api/messages?type=poll"
     }
   ],
   "env": {
