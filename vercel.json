@@ -1,18 +1,26 @@
 {
-  "version": 2,
-  "functions": {
-    "api/**/*.go": {
-      "runtime": "go1.x"
+  "builds": [
+    {
+      "src": "api/*.go",
+      "use": "@vercel/go"
+    },
+    {
+      "src": "index.html",
+      "use": "@vercel/static"
     }
-  },
+  ],
+  "routes": [
+    {
+      "src": "/",
+      "dest": "/index.html"
+    },
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    }
+  ],
   "env": {
-    "APP_PORT": "3000",
-    "APP_DEBUG": "false",
-    "APP_OS": "Chrome",
-    "DB_URI": "postgres://postgres:[password]@db.ybmbntfcvvhdpqatadry.supabase.co:5432/postgres?sslmode=require",
-    "WHATSAPP_CHAT_STORAGE": "true",
     "SUPABASE_URL": "https://ybmbntfcvvhdpqatadry.supabase.co",
-    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibWJudGZjdnZoZHBxYXRhZHJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTU2NzIsImV4cCI6MjA3MzQ5MTY3Mn0.BPROotBhoBByrYC2-H0GViwxEyriPVuk-pChy6lD5QU",
-    "CGO_ENABLED": "0"
+    "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibWJudGZjdnZoZHBxYXRhZHJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTU2NzIsImV4cCI6MjA3MzQ5MTY3Mn0.BPROotBhoBByrYC2-H0GViwxEyriPVuk-pChy6lD5QU"
   }
 }
