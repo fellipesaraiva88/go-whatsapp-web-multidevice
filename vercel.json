@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "Dockerfile",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "."
+      }
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/whatsapp"
+    }
+  ],
+  "env": {
+    "APP_PORT": "3000",
+    "APP_DEBUG": "false",
+    "APP_OS": "Chrome",
+    "DB_URI": "postgres://postgres:[password]@db.ybmbntfcvvhdpqatadry.supabase.co:5432/postgres?sslmode=require",
+    "WHATSAPP_CHAT_STORAGE": "true"
+  }
+}
