@@ -53,8 +53,64 @@
     {
       "src": "/api/send/poll",
       "dest": "/api/messages?type=poll"
+    },
+    {
+      "src": "/api/auth/login",
+      "dest": "/api/auth?endpoint=login"
+    },
+    {
+      "src": "/api/auth/refresh",
+      "dest": "/api/auth?endpoint=refresh"
+    },
+    {
+      "src": "/api/auth/validate",
+      "dest": "/api/auth?endpoint=validate"
+    },
+    {
+      "src": "/api/profile",
+      "dest": "/api/protected?endpoint=profile"
+    },
+    {
+      "src": "/api/admin/dashboard",
+      "dest": "/api/protected?endpoint=dashboard"
+    },
+    {
+      "src": "/api/protected/send/message",
+      "dest": "/api/protected?endpoint=send"
+    },
+    {
+      "src": "/api/protected/messages/history",
+      "dest": "/api/protected?endpoint=history"
+    },
+    {
+      "src": "/api/webhook/receive",
+      "dest": "/api/webhook?endpoint=receive"
+    },
+    {
+      "src": "/api/webhook/send",
+      "dest": "/api/webhook?endpoint=send"
+    },
+    {
+      "src": "/api/webhook/manage",
+      "dest": "/api/webhook?endpoint=manage"
+    },
+    {
+      "src": "/api/health",
+      "dest": "/api/monitoring?endpoint=health"
+    },
+    {
+      "src": "/api/monitoring/system",
+      "dest": "/api/monitoring?endpoint=system"
+    },
+    {
+      "src": "/api/monitoring/webhooks",
+      "dest": "/api/monitoring?endpoint=webhooks"
+    },
+    {
+      "src": "/api/monitoring/messages",
+      "dest": "/api/monitoring?endpoint=messages"
     }
-  ],
+  ]
   "env": {
     "SUPABASE_URL": "https://ybmbntfcvvhdpqatadry.supabase.co",
     "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibWJudGZjdnZoZHBxYXRhZHJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTU2NzIsImV4cCI6MjA3MzQ5MTY3Mn0.BPROotBhoBByrYC2-H0GViwxEyriPVuk-pChy6lD5QU"
