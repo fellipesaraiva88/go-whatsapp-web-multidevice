@@ -84,5 +84,5 @@ func storeMessage(service *WhatsAppService, phone, msgType, content, messageID s
 		"timestamp": time.Now().UTC(),
 	}
 	
-	service.supabase.DB.From("chat_storage").Insert(message).Execute()
+	service.supabase.From("chat_storage").Insert(message).Execute()
 }

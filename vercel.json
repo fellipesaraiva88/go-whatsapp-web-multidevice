@@ -110,7 +110,7 @@
       "src": "/api/monitoring/messages",
       "dest": "/api/monitoring?endpoint=messages"
     }
-  ]
+  ],
   "env": {
     "SUPABASE_URL": "https://ybmbntfcvvhdpqatadry.supabase.co",
     "SUPABASE_ANON_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlibWJudGZjdnZoZHBxYXRhZHJ5Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTc5MTU2NzIsImV4cCI6MjA3MzQ5MTY3Mn0.BPROotBhoBByrYC2-H0GViwxEyriPVuk-pChy6lD5QU"

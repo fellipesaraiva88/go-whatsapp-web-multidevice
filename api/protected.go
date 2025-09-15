@@ -32,7 +32,10 @@ func Profile(w http.ResponseWriter, r *http.Request) {
 	var whatsappStatus string = "disconnected"
 	
 	if service != nil {
-		err := service.supabase.DB.From("whatsapp_sessions").Select("*").Execute(&sessions)
+	result, err := service.supabase.From("whatsapp_sessions").Select("*").Execute()
+	if err == nil {
+		json.Unmarshal(result.Data, &sessions)
+	}
 		if err == nil && len(sessions) > 0 {
 			whatsappStatus = "connected"
 		}
@@ -93,8 +96,15 @@ func AdminDashboard(w http.ResponseWriter, r *http.Request) {
 		var sessions []Session
 		var messages []map[string]interface{}
 		
-		service.supabase.DB.From("whatsapp_sessions").Select("*").Execute(&sessions)
-		service.supabase.DB.From("chat_storage").Select("*").Execute(&messages)
+	result1, _ := service.supabase.From("whatsapp_sessions").Select("*").Execute()
+	result2, _ := service.supabase.From("chat_storage").Select("*").Execute()
+	
+	if result1 != nil {
+		json.Unmarshal(result1.Data, &sessions)
+	}
+	if result2 != nil {
+		json.Unmarshal(result2.Data, &messages)
+	}
 		
 		stats["total_sessions"] = len(sessions)
 		stats["total_messages"] = len(messages)
@@ -181,7 +191,7 @@ func ProtectedSendMessage(w http.ResponseWriter, r *http.Request) {
 			},
 			"timestamp": time.Now().UTC(),
 		}
-		service.supabase.DB.From("chat_storage").Insert(message).Execute()
+	service.supabase.From("chat_storage").Insert(message).Execute()
 	}
 
 	response := MessageResponse{
@@ -227,14 +237,17 @@ func GetMessageHistory(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Build query
-	query := service.supabase.DB.From("chat_storage").Select("*").Order("timestamp", &map[string]interface{}{"ascending": false}).Limit(50)
+	query := service.supabase.From("chat_storage").Select("*").Order("timestamp", false).Limit(50)
 	
 	if phone != "" {
 		query = query.Eq("jid", phone)
 	}
 
 	var messages []map[string]interface{}
-	err := query.Execute(&messages)
+	result, err := query.Execute()
+	if err == nil && result != nil {
+		json.Unmarshal(result.Data, &messages)
+	}
 	
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)

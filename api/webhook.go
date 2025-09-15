@@ -273,7 +273,7 @@ func processIncomingMessage(message IncomingMessage) (string, error) {
 		"timestamp": time.Now().UTC(),
 	}
 
-	_, err := service.supabase.DB.From("chat_storage").Insert(incomingData).Execute()
+	_, err := service.supabase.From("chat_storage").Insert(incomingData).Execute()
 	if err != nil {
 		return eventID, fmt.Errorf("failed to store message: %v", err)
 	}

@@ -1,28 +1,6 @@
 package handler
 
 import (
-	"net/http"
-)
-
-func WhatsAppHandler(w http.ResponseWriter, r *http.Request) {
-	endpoint := r.URL.Query().Get("endpoint")
-
-	switch endpoint {
-	case "qr":
-		QRCode(w, r)
-	case "status":
-		Status(w, r)
-	case "logout":
-		Logout(w, r)
-	default:
-		w.WriteHeader(http.StatusNotFound)
-		w.Write([]byte("Endpoint not found"))
-	}
-}
-
-package handler
-
-import (
 	"context"
 	"encoding/json"
 	"fmt"
@@ -30,11 +8,11 @@ import (
 	"os"
 	"time"
 
-	"github.com/supabase-community/supabase-go"
+	"github.com/supabase-community/postgrest-go"
 )
 
 type WhatsAppService struct {
-	supabase *supabase.Client
+	supabase *postgrest.Client
 }
 
 type QRCodeResponse struct {
@@ -71,8 +49,8 @@ func NewWhatsAppService() *WhatsAppService {
 		return nil
 	}
 	
-	client, err := supabase.NewClient(supabaseURL, supabaseKey, &supabase.ClientOptions{})
-	if err != nil {
+	client := postgrest.NewClient(supabaseURL+"/rest/v1", supabaseKey, nil)
+	if client == nil {
 		return nil
 	}
 	
@@ -123,7 +101,11 @@ func Status(w http.ResponseWriter, r *http.Request) {
 
 	// Check for active sessions in database
 	var sessions []Session
-	err := service.supabase.DB.From("whatsapp_sessions").Select("*").Execute(&sessions)
+	result, err := service.supabase.From("whatsapp_sessions").Select("*").Execute()
+	
+	if err == nil {
+		json.Unmarshal(result.Data, &sessions)
+	}
 	
 	var status ConnectionStatus
 	if err != nil || len(sessions) == 0 {
@@ -167,7 +149,7 @@ func Logout(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Delete all sessions from database
-	_, err := service.supabase.DB.From("whatsapp_sessions").Delete().Execute()
+	_, err := service.supabase.From("whatsapp_sessions").Delete().Execute()
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
 		json.NewEncoder(w).Encode(map[string]string{"error": "Failed to logout"})
@@ -194,6 +176,25 @@ func (s *WhatsAppService) SaveSession(ctx context.Context, jid string, deviceID 
 		"updated_at": time.Now().UTC(),
 	}
 	
-	_, err := s.supabase.DB.From("whatsapp_sessions").Insert(session).Execute()
+	_, err := s.supabase.From("whatsapp_sessions").Insert(session).Execute()
 	return err
+}
+
+// Handler routes WhatsApp requests based on endpoint parameter
+func Handler(w http.ResponseWriter, r *http.Request) {
+	// Apply global middleware first
+	GlobalMiddleware(func(w http.ResponseWriter, r *http.Request) {
+		endpoint := r.URL.Query().Get("endpoint")
+		
+		switch endpoint {
+		case "qr":
+			QRCode(w, r)
+		case "status":
+			Status(w, r)
+		case "logout":
+			Logout(w, r)
+		default:
+			http.Error(w, "Invalid endpoint", http.StatusNotFound)
+		}
+	})(w, r)
 }
