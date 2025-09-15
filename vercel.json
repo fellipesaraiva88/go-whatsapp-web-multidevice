@@ -109,6 +109,10 @@
     {
       "src": "/api/monitoring/messages",
       "dest": "/api/monitoring?endpoint=messages"
+    },
+    {
+      "src": "/api/test",
+      "dest": "/api/test"
     }
   ],
   "env": {
