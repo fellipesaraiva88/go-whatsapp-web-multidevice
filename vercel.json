@@ -96,7 +96,7 @@
     },
     {
       "src": "/api/health",
-      "dest": "/api/monitoring?endpoint=health"
+      "dest": "/api/health"
     },
     {
       "src": "/api/monitoring/system",
